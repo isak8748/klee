@@ -493,6 +493,13 @@ void KleeHandler::processTestCase(const ExecutionState &state,
 
     unsigned id = ++m_numTotalTests;
 
+    bool writePaths = true;
+    if (writePaths) {
+      auto f = openTestFile("paths", id);
+      if (f)
+        *f << "SKIPEDIBAPER";
+    }
+
     if (success) {
       KTest b;
       b.numArgs = m_argc;
