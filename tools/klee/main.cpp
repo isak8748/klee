@@ -61,12 +61,9 @@
 #include <iomanip>
 #include <iterator>
 #include <sstream>
-#include <iostream>
-
 
 using namespace llvm;
 using namespace klee;
-using namespace std;
 
 namespace {
   cl::opt<std::string>
@@ -483,7 +480,7 @@ void KleeHandler::processTestCase(const ExecutionState &state,
                                   const char *errorMessage,
                                   const char *errorSuffix) {
   if (!WriteNone) {
-    std::cout << "path has this many Br instructions: " << m_interpreter->getInstructionCount(state, "Br");
+    klee_message("path has this many Ret Instructions: %i", m_interpreter->getInstructionCount(state, "Ret"));
 
 
     std::vector< std::pair<std::string, std::vector<unsigned char> > > out;
