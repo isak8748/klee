@@ -483,7 +483,7 @@ void KleeHandler::processTestCase(const ExecutionState &state,
                                   const char *errorMessage,
                                   const char *errorSuffix) {
   if (!WriteNone) {
-    std::cout << "path has this many br instructions: " << m_interpreter->getInstructionCount(state, "br");
+    std::cout << "path has this many Br instructions: " << m_interpreter->getInstructionCount(state, "Br");
 
 
     std::vector< std::pair<std::string, std::vector<unsigned char> > > out;
