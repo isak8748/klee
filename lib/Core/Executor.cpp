@@ -2211,6 +2211,7 @@ void Executor::executeInstruction(ExecutionState &state, KInstruction *ki) {
       if (branches.second)
         transferToBasicBlock(bi->getSuccessor(1), bi->getParent(), *branches.second);
     }
+    updateInstructionCount(state, "br");
     break;
   }
   case Instruction::IndirectBr: {
@@ -2559,6 +2560,7 @@ void Executor::executeInstruction(ExecutionState &state, KInstruction *ki) {
     ref<Expr> left = eval(ki, 0, state).value;
     ref<Expr> right = eval(ki, 1, state).value;
     bindLocal(ki, state, AddExpr::create(left, right));
+    updateInstructionCount(state, "add");
     break;
   }
 
@@ -4794,4 +4796,22 @@ void Executor::dumpStates() {
 Interpreter *Interpreter::create(LLVMContext &ctx, const InterpreterOptions &opts,
                                  InterpreterHandler *ih) {
   return new Executor(ctx, opts, ih);
+}
+
+void Executor::updateInstructionCount(ExecutionState &state, std::string opcode) {
+  auto search = state.instructionCounts.find(opcode);
+  if (search != state.instructionCounts.end()) {
+    ++search->second;
+  }
+  else {
+    state.instructionCounts[opcode] = 1;
+  }
+}
+
+unsigned Executor::getInstructionCount(const ExecutionState &state, std::string opcode) {
+  auto search = state.instructionCounts.find(opcode);
+  if (search != state.instructionCounts.end()) {
+    return search->second;
+  }
+  return 0;
 }

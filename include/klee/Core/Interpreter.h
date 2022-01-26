@@ -163,6 +163,10 @@ public:
 
   virtual void getCoveredLines(const ExecutionState &state,
                                std::map<const std::string*, std::set<unsigned> > &res) = 0;
+
+  virtual void updateInstructionCount(ExecutionState &state, std::string opcode) = 0;
+
+  virtual unsigned getInstructionCount(const ExecutionState &state, std::string opcode) = 0;
 };
 
 } // End klee namespace

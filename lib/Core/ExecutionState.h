@@ -25,6 +25,7 @@
 #include <memory>
 #include <set>
 #include <vector>
+#include <unordered_map>
 
 namespace klee {
 class Array;
@@ -239,6 +240,10 @@ public:
 
   /// @brief Disables forking for this state. Set by user code
   bool forkDisabled;
+
+  /// @brief Count of all instruction types
+  std::unordered_map<std::string, unsigned> instructionCounts;
+
 
 public:
   #ifdef KLEE_UNITTEST

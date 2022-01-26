@@ -551,6 +551,11 @@ public:
 
   MergingSearcher *getMergingSearcher() const { return mergingSearcher; };
   void setMergingSearcher(MergingSearcher *ms) { mergingSearcher = ms; };
+
+  void updateInstructionCount(ExecutionState &state, std::string opcode);
+
+  unsigned getInstructionCount(const ExecutionState &state, std::string opcode);
+
 };
   
 } // End klee namespace
