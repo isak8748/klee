@@ -556,6 +556,8 @@ public:
 
   unsigned getInstructionCount(const ExecutionState &state, std::string opcode);
 
+  std::string instrCountToString(const ExecutionState &state);
+
 };
   
 } // End klee namespace
