@@ -480,7 +480,6 @@ void KleeHandler::processTestCase(const ExecutionState &state,
                                   const char *errorMessage,
                                   const char *errorSuffix) {
   if (!WriteNone) {
-    klee_message("path has this many Ret Instructions: %i", m_interpreter->getInstructionCount(state, "Ret"));
 
 
     std::vector< std::pair<std::string, std::vector<unsigned char> > > out;
@@ -495,9 +494,9 @@ void KleeHandler::processTestCase(const ExecutionState &state,
 
     bool writePaths = true;
     if (writePaths) {
-      auto f = openTestFile("paths", id);
+      auto f = openTestFile("instructions", id);
       if (f)
-        *f << "SKIPEDIBAPER";
+        *f << m_interpreter->instrCountToString(state);
     }
 
     if (success) {

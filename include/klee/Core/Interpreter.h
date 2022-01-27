@@ -167,6 +167,8 @@ public:
   virtual void updateInstructionCount(ExecutionState &state, std::string opcode) = 0;
 
   virtual unsigned getInstructionCount(const ExecutionState &state, std::string opcode) = 0;
+
+  virtual std::string instrCountToString(const ExecutionState &state) = 0;
 };
 
 } // End klee namespace
