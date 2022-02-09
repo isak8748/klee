@@ -2095,6 +2095,9 @@ void Executor::executeInstruction(ExecutionState &state, KInstruction *ki) {
   case Instruction::Ret: {
     updateInstructionCount(state, "Ret");
     ReturnInst *ri = cast<ReturnInst>(i);
+    std::string label = getSimpleNodeLabel(ri->getParent());
+    state.pathLabels += " ";
+    state.pathLabels += label;
     KInstIterator kcaller = state.stack.back().caller;
     Instruction *caller = kcaller ? kcaller->inst : nullptr;
     bool isVoidReturn = (ri->getNumOperands() == 0);
@@ -2203,7 +2206,7 @@ void Executor::executeInstruction(ExecutionState &state, KInstruction *ki) {
     BranchInst *bi = cast<BranchInst>(i);
     //klee_message("encountered br instruction in block: %s", getSimpleNodeLabel(bi->getParent()).c_str());
     std::string label = getSimpleNodeLabel(bi->getParent());
-    state.pathLabels += "|"
+    state.pathLabels += " ";
     state.pathLabels += label;
     if (bi->isUnconditional()) {
       transferToBasicBlock(bi->getSuccessor(0), bi->getParent(), state);
@@ -2234,6 +2237,9 @@ void Executor::executeInstruction(ExecutionState &state, KInstruction *ki) {
     updateInstructionCount(state, "IndirectBr");
     // implements indirect branch to a label within the current function
     const auto bi = cast<IndirectBrInst>(i);
+    std::string label = getSimpleNodeLabel(bi->getParent());
+    state.pathLabels += " ";
+    state.pathLabels += label;
     auto address = eval(ki, 0, state).value;
     address = toUnique(state, address);
 
@@ -2309,6 +2315,9 @@ void Executor::executeInstruction(ExecutionState &state, KInstruction *ki) {
   case Instruction::Switch: {
     updateInstructionCount(state, "Switch");
     SwitchInst *si = cast<SwitchInst>(i);
+    std::string label = getSimpleNodeLabel(si->getParent());
+    state.pathLabels += " ";
+    state.pathLabels += label;
     ref<Expr> cond = eval(ki, 0, state).value;
     BasicBlock *bb = si->getParent();
 
