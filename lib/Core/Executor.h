@@ -558,6 +558,8 @@ public:
 
   std::string instrCountToString(const ExecutionState &state);
 
+  std::string pathLabelsToString(const ExecutionState &state);
+
 };
   
 } // End klee namespace
