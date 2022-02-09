@@ -113,7 +113,8 @@ ExecutionState::ExecutionState(const ExecutionState& state):
                              : nullptr),
     coveredNew(state.coveredNew),
     forkDisabled(state.forkDisabled),
-    instructionCounts(state.instructionCounts) {
+    instructionCounts(state.instructionCounts),
+    pathLabels(state.pathLabels) {
   for (const auto &cur_mergehandler: openMergeStack)
     cur_mergehandler->addOpenState(this);
 }

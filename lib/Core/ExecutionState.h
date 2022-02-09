@@ -244,6 +244,8 @@ public:
   /// @brief Count of all instruction types
   std::unordered_map<std::string, unsigned> instructionCounts;
 
+  std::string pathLabels;
+
 
 public:
   #ifdef KLEE_UNITTEST

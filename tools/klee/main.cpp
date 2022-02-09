@@ -481,6 +481,8 @@ void KleeHandler::processTestCase(const ExecutionState &state,
                                   const char *errorSuffix) {
   if (!WriteNone) {
 
+    //klee_message("label history is: %s", m_interpreter->pathLabelsToString(state).c_str());
+
 
     std::vector< std::pair<std::string, std::vector<unsigned char> > > out;
     bool success = m_interpreter->getSymbolicSolution(state, out);
@@ -497,6 +499,18 @@ void KleeHandler::processTestCase(const ExecutionState &state,
       auto f = openTestFile("instructions", id);
       if (f)
         *f << m_interpreter->instrCountToString(state);
+    }
+
+    bool writeLabels = true;
+    if (writeLabels)  {
+      auto f = openTestFile("labels", id);
+      if (f){
+        std::string labels = m_interpreter->pathLabelsToString(state);
+        if (labels.at(0) == ' ') {
+          labels.erase(0, 1);
+        }
+        *f << labels;
+      }
     }
 
     if (success) {
