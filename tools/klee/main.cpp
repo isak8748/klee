@@ -504,8 +504,13 @@ void KleeHandler::processTestCase(const ExecutionState &state,
     bool writeLabels = true;
     if (writeLabels)  {
       auto f = openTestFile("labels", id);
-      if (f)
-        *f << m_interpreter->pathLabelsToString(state);
+      if (f){
+        std::string labels = m_interpreter->pathLabelsToString(state);
+        if (labels.at(0) == ' ') {
+          labels.erase(0, 1);
+        }
+        *f << labels;
+      }
     }
 
     if (success) {
