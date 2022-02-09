@@ -4874,11 +4874,12 @@ std::string Executor::instrCountToString(const ExecutionState &state) {
   std::unordered_map<std::string, unsigned int>::iterator it;
   for (it = map.begin(); it != map.end(); it++)
   {
-    s += it->first + " : " + std::to_string(it->second);
-    if (it != map.end())
+    if (it != map.begin())
     {
       s += "\n";
     }
+    
+    s += it->first + " : " + std::to_string(it->second);
     
   }
   return s;
