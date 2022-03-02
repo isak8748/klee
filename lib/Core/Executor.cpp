@@ -437,12 +437,13 @@ unsigned dumpStates = 0, dumpPTree = 0;
 
 static std::string getSimpleNodeLabel(const BasicBlock *Node) {
     if (!Node->getName().empty())
-        return Node->getName().str();
+        return Node->getName().str() + "|" + Node->getParent()->getName().str();
 
     std::string Str;
     raw_string_ostream OS(Str);
 
     Node->printAsOperand(OS, false);
+    Str +="|" + Node->getParent()->getName().str();
     return OS.str();
 }
 
@@ -2450,6 +2451,9 @@ void Executor::executeInstruction(ExecutionState &state, KInstruction *ki) {
   case Instruction::Invoke:
   case Instruction::Call: {
     updateInstructionCount(state, "Call");
+    std::string label = getSimpleNodeLabel(i->getParent());
+    state.pathLabels += " ";
+    state.pathLabels += label;
     // Ignore debug intrinsic calls
     if (isa<DbgInfoIntrinsic>(i))
       break;
