@@ -92,6 +92,10 @@ bool RaiseAsmPass::runOnModule(Module &M) {
   if (TargetTriple.empty())
     TargetTriple = llvm::sys::getDefaultTargetTriple();
   const Target *Target = TargetRegistry::lookupTarget(TargetTriple, Err);
+  for (const auto &T : TargetRegistry::targets()) {
+     klee_warning("%s", T.getName());
+   }
+  klee_warning("Looked up target: %s", TargetTriple.c_str());
 
   TargetMachine * TM = 0;
   if (Target == 0) {

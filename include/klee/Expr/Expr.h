@@ -10,6 +10,8 @@
 #ifndef KLEE_EXPR_H
 #define KLEE_EXPR_H
 
+#include "klee/Support/ErrorHandling.h"
+
 #include "klee/ADT/Bits.h"
 #include "klee/ADT/Ref.h"
 #include "llvm/ADT/APFloat.h"
@@ -1077,6 +1079,7 @@ public:
   }
 
   static ref<ConstantExpr> create(uint64_t v, Width w) {
+    klee_message("%d, %lu, %lu", w, v, bits64::truncateToNBits(v, w));
 #ifndef NDEBUG
     if (w <= 64)
       assert(v == bits64::truncateToNBits(v, w) && "invalid constant");
