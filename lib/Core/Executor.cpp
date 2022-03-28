@@ -2450,13 +2450,14 @@ void Executor::executeInstruction(ExecutionState &state, KInstruction *ki) {
 
   case Instruction::Invoke:
   case Instruction::Call: {
-    updateInstructionCount(state, "Call");
     std::string label = getSimpleNodeLabel(i->getParent());
     state.pathLabels += " ";
     state.pathLabels += label;
     // Ignore debug intrinsic calls
     if (isa<DbgInfoIntrinsic>(i))
       break;
+
+    updateInstructionCount(state, "Call");
 
 #if LLVM_VERSION_CODE >= LLVM_VERSION(8, 0)
     const CallBase &cs = cast<CallBase>(*i);
