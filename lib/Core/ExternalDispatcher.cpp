@@ -133,12 +133,12 @@ ExternalDispatcherImpl::ExternalDispatcherImpl(LLVMContext &ctx)
   //llvm::InitializeNativeTarget();
   //llvm::InitializeNativeTargetAsmParser();
   //llvm::InitializeNativeTargetAsmPrinter();
-  //llvm::InitializeAllTargetInfos();
+  llvm::InitializeAllTargetInfos();
   llvm::InitializeAllTargets();
-  //llvm::InitializeAllTargetMCs();
+  llvm::InitializeAllTargetMCs();
   llvm::InitializeAllAsmParsers();
   llvm::InitializeAllAsmPrinters();
-  //llvm::InitializeAllDisassemblers();
+  llvm::InitializeAllDisassemblers();
 
   // from ExecutionEngine::create
   if (executionEngine) {

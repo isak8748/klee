@@ -126,5 +126,7 @@ bool RaiseAsmPass::runOnModule(Module &M) {
 
   delete TM;
 
+  klee_message("got through RaiseAsm");
+
   return changed;
 }
