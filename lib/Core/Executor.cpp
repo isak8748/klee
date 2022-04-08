@@ -570,16 +570,6 @@ Executor::setModule(std::vector<std::unique_ptr<llvm::Module>> &modules,
   /*Context::initialize(TD->isLittleEndian(),
                       (Expr::Width)TD->getPointerSizeInBits());*/
 
-  auto x = TD->getStringRepresentation();
-  klee_warning("x is: %s", x.c_str());
-
-  if (TD->isLegalInteger(32)) {
-    klee_warning("32 is legal");
-  }
-
-  if (TD->isLegalInteger(64)) {
-    klee_warning("64 is legal");
-  }
   
   Context::initialize(TD->isLittleEndian(),
                       (Expr::Width)64);
