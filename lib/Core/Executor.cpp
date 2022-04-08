@@ -2458,6 +2458,7 @@ void Executor::executeInstruction(ExecutionState &state, KInstruction *ki) {
     updateInstructionCount(state, "Call");
     std::string label = getSimpleNodeLabel(i->getParent());
     state.pathLabels += " ";
+    state.pathLabels += "call|";
     state.pathLabels += label;
     // Ignore debug intrinsic calls
     if (isa<DbgInfoIntrinsic>(i))
