@@ -1306,13 +1306,10 @@ int main(int argc, char **argv, char **envp) {
 
   if (module_triple == "thumbv7em-none-unknown-eabihf") {
     opt_suffix = "thumb";
-    klee_warning("set opt_suffix to thumb");
   }
 
   // Add additional user-selected suffix
   opt_suffix += "_" + RuntimeBuild.getValue();
-
-  klee_warning("opt_suffix is: %s", opt_suffix.c_str());
 
   // Push the module as the first entry
   loadedModules.emplace_back(std::move(M));
