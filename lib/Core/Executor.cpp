@@ -2208,15 +2208,15 @@ void Executor::executeInstruction(ExecutionState &state, KInstruction *ki) {
     break;
   }
   case Instruction::Br: {
-    updateInstructionCount(state, "Br");
     BranchInst *bi = cast<BranchInst>(i);
-    //klee_message("encountered br instruction in block: %s", getSimpleNodeLabel(bi->getParent()).c_str());
     std::string label = getSimpleNodeLabel(bi->getParent());
     state.pathLabels += " ";
     state.pathLabels += label;
     if (bi->isUnconditional()) {
+      updateInstructionCount(state, "Br");
       transferToBasicBlock(bi->getSuccessor(0), bi->getParent(), state);
     } else {
+      updateInstructionCount(state, "Br il");
       // FIXME: Find a way that we don't have this hidden dependency.
       assert(bi->getCondition() == bi->getOperand(0) &&
              "Wrong operand index!");
@@ -2463,7 +2463,12 @@ void Executor::executeInstruction(ExecutionState &state, KInstruction *ki) {
     if (isa<DbgInfoIntrinsic>(i))
       break;
 
-    updateInstructionCount(state, "Call");
+    CallInst *ci = cast<CallInst>(i);
+    Function *func = ci->getCalledFunction();
+    if (func->getName() != "klee_make_symbolic")
+    {
+      updateInstructionCount(state, "Call");
+    }
 
 #if LLVM_VERSION_CODE >= LLVM_VERSION(8, 0)
     const CallBase &cs = cast<CallBase>(*i);
