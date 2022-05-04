@@ -2099,7 +2099,6 @@ void Executor::executeInstruction(ExecutionState &state, KInstruction *ki) {
   switch (i->getOpcode()) {
     // Control flow
   case Instruction::Ret: {
-    updateInstructionCount(state, "Ret");
     ReturnInst *ri = cast<ReturnInst>(i);
     std::string label = getSimpleNodeLabel(ri->getParent());
     state.pathLabels += " ";
@@ -2107,6 +2106,13 @@ void Executor::executeInstruction(ExecutionState &state, KInstruction *ki) {
     KInstIterator kcaller = state.stack.back().caller;
     Instruction *caller = kcaller ? kcaller->inst : nullptr;
     bool isVoidReturn = (ri->getNumOperands() == 0);
+    if (isVoidReturn) {
+      updateInstructionCount(state, "RetVoid");
+    }
+    else {
+      updateInstructionCount(state, "Ret;" + std::to_string(ri->getNumOperands()));
+    }
+    
     ref<Expr> result = ConstantExpr::alloc(0, Expr::Bool);
     
     if (!isVoidReturn) {
@@ -2319,8 +2325,8 @@ void Executor::executeInstruction(ExecutionState &state, KInstruction *ki) {
     break;
   }
   case Instruction::Switch: {
-    updateInstructionCount(state, "Switch");
     SwitchInst *si = cast<SwitchInst>(i);
+    updateInstructionCount(state, "Switch;" + std::to_string(si->getNumOperands()));
     std::string label = getSimpleNodeLabel(si->getParent());
     state.pathLabels += " ";
     state.pathLabels += label;
@@ -2467,7 +2473,7 @@ void Executor::executeInstruction(ExecutionState &state, KInstruction *ki) {
     Function *func = ci->getCalledFunction();
     if (func->getName() != "klee_make_symbolic")
     {
-      updateInstructionCount(state, "Call");
+      updateInstructionCount(state, "Call;" +std::to_string(ci->getNumOperands()));
     }
 
 #if LLVM_VERSION_CODE >= LLVM_VERSION(8, 0)
@@ -3210,8 +3216,8 @@ void Executor::executeInstruction(ExecutionState &state, KInstruction *ki) {
     break;
   }
   case Instruction::InsertValue: {
-    updateInstructionCount(state, "InsertValue");
     KGEPInstruction *kgepi = static_cast<KGEPInstruction*>(ki);
+    updateInstructionCount(state, "InsertValue");
 
     ref<Expr> agg = eval(ki, 0, state).value;
     ref<Expr> val = eval(ki, 1, state).value;
