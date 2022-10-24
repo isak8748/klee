@@ -25,3 +25,18 @@ files, pipes, environment variables, and passing command line
 arguments.
 
 For further information, see the [webpage](http://klee.github.io/).
+
+
+Fork specific information:
+--------------------------
+
+This fork outputs additional information for each generated test case. 
+The information can be found in the klee-out folders (.labels and .instructions files).
+
+To run this tool:
+
+   1. Build KLEE according to [this](https://klee.github.io/build-llvm11/) guide but use LLVM 13 instead.
+
+   2. To analyze thumbv7em code, install _arm-none-eabi-gcc_ and 
+      edit [this](https://github.com/isak8748/klee/blob/master/runtime/CMakeLists.txt#L37)
+      line to for its correct include directory.
