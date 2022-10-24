@@ -130,9 +130,6 @@ ExternalDispatcherImpl::ExternalDispatcherImpl(LLVMContext &ctx)
 
   // If we have a native target, initialize it to ensure it is linked in and
   // usable by the JIT.
-  //llvm::InitializeNativeTarget();
-  //llvm::InitializeNativeTargetAsmParser();
-  //llvm::InitializeNativeTargetAsmPrinter();
   llvm::InitializeAllTargetInfos();
   llvm::InitializeAllTargets();
   llvm::InitializeAllTargetMCs();

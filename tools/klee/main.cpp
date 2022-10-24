@@ -1187,9 +1187,6 @@ int main(int argc, char **argv, char **envp) {
 #endif
 
   llvm::InitializeNativeTarget();
-  //llvm::InitializeAllTargetInfos();
-
-  //llvm::InitializeAllTargets();
 
   parseArguments(argc, argv);
 #if LLVM_VERSION_CODE >= LLVM_VERSION(3, 9)
@@ -1311,8 +1308,6 @@ int main(int argc, char **argv, char **envp) {
 
   // Add additional user-selected suffix
   opt_suffix += "_" + RuntimeBuild.getValue();
-
-  klee_warning("opt_suffix is: %s", opt_suffix.c_str());
 
   // Push the module as the first entry
   loadedModules.emplace_back(std::move(M));
