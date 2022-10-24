@@ -1077,6 +1077,9 @@ public:
   }
 
   static ref<ConstantExpr> create(uint64_t v, Width w) {
+    if (v > 4294967295) {
+      return alloc(v, 64);
+    }
 #ifndef NDEBUG
     if (w <= 64)
       assert(v == bits64::truncateToNBits(v, w) && "invalid constant");

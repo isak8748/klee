@@ -568,7 +568,7 @@ Executor::setModule(std::vector<std::unique_ptr<llvm::Module>> &modules,
   // Initialize the context.
   DataLayout *TD = kmodule->targetData.get();
   Context::initialize(TD->isLittleEndian(),
-                      (Expr::Width)TD->getPointerSizeInBits());
+                      (Expr::Width)64);
 
   return kmodule->module.get();
 }
@@ -2452,6 +2452,7 @@ void Executor::executeInstruction(ExecutionState &state, KInstruction *ki) {
   case Instruction::Call: {
     std::string label = getSimpleNodeLabel(i->getParent());
     state.pathLabels += " ";
+    state.pathLabels += "call|";
     state.pathLabels += label;
     // Ignore debug intrinsic calls
     if (isa<DbgInfoIntrinsic>(i))

@@ -1301,6 +1301,11 @@ int main(int argc, char **argv, char **envp) {
       module_triple.find("i386") != std::string::npos)
     opt_suffix = "32";
 
+  if (module_triple == "thumbv7em-none-unknown-eabihf") {
+    opt_suffix = "thumb";
+    klee_warning("set opt_suffix to thumb");
+  }
+
   // Add additional user-selected suffix
   opt_suffix += "_" + RuntimeBuild.getValue();
 

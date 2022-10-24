@@ -18,6 +18,8 @@ if (M32_SUPPORTED)
     list(APPEND bc_architectures "32")
 endif ()
 
+list(APPEND bc_architectures "thumb")
+
 set(LIB_BC_SUFFIX "")
 
 foreach (bc_architecture ${bc_architectures})
@@ -29,6 +31,11 @@ foreach (bc_architecture ${bc_architectures})
         set(local_flags "")
         if (bc_architecture EQUAL "32")
             list(APPEND local_flags -m32)
+        endif ()
+
+        if (bc_architecture STREQUAL "thumb")
+            list(APPEND local_flags --target=arm-none-eabihf -march=armv7e-m -I/lib/arm-none-eabi/include)
+            #list(APPEND local_flags -m32)
         endif ()
 
 
@@ -92,13 +99,11 @@ endforeach ()
 add_subdirectory(Freestanding)
 add_subdirectory(Intrinsic)
 add_subdirectory(klee-libc)
-add_subdirectory(Fortify)
 
 set(RUNTIME_LIBRARIES
         RuntimeFreestanding
         RuntimeIntrinsic
         RuntimeKLEELibc
-        RuntimeFortify
         )
 
 if (ENABLE_KLEE_EH_CXX)
@@ -109,6 +114,11 @@ endif ()
 if (ENABLE_POSIX_RUNTIME)
     list(APPEND RUNTIME_LIBRARIES RuntimePOSIX)
     add_subdirectory(POSIX)
+endif ()
+
+if (ENABLE_KLEE_UCLIBC)
+    list(APPEND RUNTIME_LIBRARIES RuntimeFortify)
+    add_subdirectory(Fortify)
 endif ()
 
 add_custom_target(BuildKLEERuntimes
